@@ -5,6 +5,7 @@ import axios from "axios"
 import {
   getCoreRowModel,
   useReactTable,
+  getSortedRowModel,
 } from '@tanstack/react-table'
 
 import { Header } from "./components/Header"
@@ -15,6 +16,7 @@ const App = () => {
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
+  const [sorting, setSorting] = useState([])
 
   const columns = useMemo(
     () => [
@@ -89,6 +91,11 @@ const App = () => {
   const table = useReactTable({
     data,
     columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     debugTable: true,
     debugHeaders: true,
@@ -100,7 +107,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Header />
-      {isLoading ? <div>Loading ...</div> : <Table table={table} />}
+      {isLoading ? <div>Loading ...</div> : <Table table={table} sorting={sorting} />}
       {isError && <div>Something went wrong ...</div>}
     </React.Fragment>
   )

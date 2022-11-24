@@ -1,4 +1,4 @@
-import React, { useReducer } from "react"
+import React from "react"
 
 import { flexRender } from "@tanstack/react-table"
 import { ReactTableDevtools } from "@tanstack/react-table-devtools"
@@ -6,8 +6,12 @@ import { ReactTableDevtools } from "@tanstack/react-table-devtools"
 import MaUTable from '@mui/material/Table'
 import { TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 
-const Table = ({ table }) => {
-  const rerender = useReducer(() => ({}), {})[1]
+import { css } from '@emotion/css'
+
+import { useStyles } from './Table.styles'
+
+const Table = ({ table, sorting }) => {
+  const styles = useStyles()
 
   return (
     <React.Fragment>
@@ -18,11 +22,29 @@ const Table = ({ table }) => {
               <TableRow>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableCell key={header.id} sx={{ fontWeight: '600' }}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableCell>
+                    <TableCell key={header.id} colSpan={header.colSpan} sx={{ fontWeight: '600' }}>
+                    {header.isPlaceholder ? null : (
+                      <>
+                        <div
+                          {...{
+                            className: header.column.getCanSort()
+                              ? css(styles.cursorPointer)
+                              : '',
+                            onClick: header.column.getToggleSortingHandler(),
+                          }}
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                          {{
+                            asc: ' 🔼',
+                            desc: ' 🔽',
+                          }[header.column.getIsSorted()] ?? null}
+                        </div>
+                      </>
+                    )}
+                  </TableCell>
                   )
                 })}
               </TableRow>
@@ -42,9 +64,7 @@ const Table = ({ table }) => {
         </TableBody>
       </MaUTable>
       <div>{table.getRowModel().rows.length} Rows</div>
-      <div>
-        <button onClick={() => rerender()}>Rerender</button>
-      </div>
+      <pre>{JSON.stringify(sorting, null, 2)}</pre>
       <ReactTableDevtools table={table} initialIsOpen />
     </React.Fragment>
   )
