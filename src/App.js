@@ -11,6 +11,7 @@ import { Header } from "./components/Header"
 import { Table } from "./components/Table"
 
 const App = () => {
+  const PLANETS_PATH = "https://swapi.dev/api/planets/?page="
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -72,8 +73,10 @@ const App = () => {
       setIsLoading(true)
 
       try {
-        const result = await axios("https://swapi.dev/api/planets")
-        setData(result.data.results)
+        for (let i = 1; i <= 6; i++) {
+          const result = await axios(PLANETS_PATH + i)
+          setData(data => [...data, ...result.data.results])
+        }
       } catch (error) {
         setIsError(true)
       }
