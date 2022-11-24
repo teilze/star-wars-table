@@ -1,10 +1,16 @@
-# Getting Started with Create React App
+# Star Wars Table
+
+A React app displaying Star Wars Planets data. You can also sort the data and search the planets by name.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+Installs the dependencies.
 
 ### `npm start`
 
