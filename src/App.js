@@ -6,6 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
   getSortedRowModel,
+  getFilteredRowModel,
 } from '@tanstack/react-table'
 
 import { Header } from "./components/Header"
@@ -17,6 +18,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
   const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState([])
 
   const columns = useMemo(
     () => [
@@ -93,20 +95,22 @@ const App = () => {
     columns,
     state: {
       sorting,
+      columnFilters,
     },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
     debugTable: true,
     debugHeaders: true,
     debugColumns: false,
   })
-
-  console.log("data", data)
+  const column = table.getHeaderGroups()[0].headers[0].column
 
   return (
     <React.Fragment>
-      <Header />
+      <Header column={column} />
       {isLoading ? <div>Loading ...</div> : <Table table={table} sorting={sorting} />}
       {isError && <div>Something went wrong ...</div>}
     </React.Fragment>

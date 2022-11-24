@@ -1,7 +1,8 @@
-import { AppBar, Box, Toolbar, Typography, TextField } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
+import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 
-const Header = () => {
+import { Filter } from "./components/Filter"
+
+const Header = ({ column }) => {
   return (
     <Box>
       <AppBar position="static" >
@@ -14,21 +15,7 @@ const Header = () => {
           >
             PLANETS
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }} >
-            <SearchIcon sx={{ mr: 1, my: 0.5, transform: 'scaleX(-1)' }} />
-            <TextField
-              id="input-with-sx"
-              label="Search By Name..."
-              variant="standard"
-              InputLabelProps={{ style: { color: "white" } }}
-              sx={{
-                input: {
-                  color: "#ffffff",
-                  borderBottom: "1px solid #ffffff",
-                },
-              }}
-            />
-          </Box>
+          <Filter column={column} />
         </Toolbar>
       </AppBar>
     </Box>
