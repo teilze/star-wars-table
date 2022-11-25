@@ -1,8 +1,10 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 
-import { Filter } from "./components/Filter"
+import { DebouncedInput } from './components/DebouncedInput'
 
 const Header = ({ column }) => {
+  const columnFilterValue = column.getFilterValue()
+
   return (
     <Box>
       <AppBar position="static" >
@@ -15,7 +17,12 @@ const Header = ({ column }) => {
           >
             PLANETS
           </Typography>
-          <Filter column={column} />
+          <DebouncedInput
+            type="text"
+            value={(columnFilterValue ?? '')}
+            onChange={value => column.setFilterValue(value)}
+            list={column.id + 'list'}
+          />
         </Toolbar>
       </AppBar>
     </Box>
